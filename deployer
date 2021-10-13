@@ -28,6 +28,11 @@ repo_sidefile2=https://rproxy.kanthzone.com/assets/bottom.conf
 repo_sidefile3=https://rproxy.kanthzone.com/assets/domain_editor
 repo_sidefile4=https://rproxy.kanthzone.com/assets/README
 repo_sidefile5=https://rproxy.kanthzone.com/assets/brand
+repo_sidefile1_local=top.conf
+repo_sidefile2_local=bottom.conf
+repo_sidefile3_local=domain_editor
+repo_sidefile4_local=README
+repo_sidefile5_local=brand
 
 which wget &> /dev/null || "wget tools is required try running, sudo yum install wget -y" exit 0
 which curl &> /dev/null || "curl tools is require try running, sudo yum install curl -y" exit 0
@@ -144,11 +149,22 @@ installer(){
   echo "Downloading required files"
   wget $repo_rproxy
   sleep 2
+  if [ $use_local == "false" ]
+  then
   wget -P $rproxy_files $repo_sidefile1
   wget -P $rproxy_files $repo_sidefile2
   wget -P $rproxy_files $repo_sidefile3
   wget -P $rproxy_files $repo_sidefile4
   wget -P $rproxy_files $repo_sidefile5
+fi
+if [ $use_local == "true" ]
+then
+  mv $repo_sidefile1_local $rproxy_files
+  mv $repo_sidefile2_local $rproxy_files
+  mv $repo_sidefile3_local $rproxy_files
+  mv $repo_sidefile4_local $rproxy_files
+  mv $repo_sidefile5_local $rproxy_files
+fi
   echo "Enabling script command"
   mv rproxy /bin/rproxy
   sleep 1
