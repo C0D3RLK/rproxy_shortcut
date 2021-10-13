@@ -35,6 +35,30 @@ this tools will make changes on these directories:<br>
 5.) /etc/nginx/https/domains<br>
 6.) content files stored at current directory /rproxy_files<br>
 
+===========INSTALLATION=========================<br>
+
+1.) wget https://github.com/C0D3RLK/rproxy_shortcut/archive/refs/heads/main.zip<br>
+OR<br>
+you may clone the git file <br>
+git clone https://github.com/C0D3RLK/rproxy_shortcut.git<br>
+
+
+2.) If you downloaded the ZIP file <br>
+*make sure you have installed the unzip tool<br>
+
+<b>unzip main.zip<br>
+
+cd rproxy_shortcut-main/<br>
+
+this will startup the instllation:<br>
+. get_rproxy_shortcut<br>
+
+</b>
+
+do the same with the downloaded git file find the "get_rproxy_shortcut" run it with bash.
+<br>
+
+
 
 ===========After installation=========================
 
