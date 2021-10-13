@@ -26,12 +26,12 @@ repo_version_url=https://rproxy.kanthzone.com/assets/version.txt
 repo_sidefile1=https://rproxy.kanthzone.com/assets/top.conf
 repo_sidefile2=https://rproxy.kanthzone.com/assets/bottom.conf
 repo_sidefile3=https://rproxy.kanthzone.com/assets/domain_editor
-repo_sidefile4=https://rproxy.kanthzone.com/assets/README
+repo_sidefile4=https://rproxy.kanthzone.com/assets/README.md
 repo_sidefile5=https://rproxy.kanthzone.com/assets/brand
 repo_sidefile1_local=top.conf
 repo_sidefile2_local=bottom.conf
 repo_sidefile3_local=domain_editor
-repo_sidefile4_local=README
+repo_sidefile4_local=README.md
 repo_sidefile5_local=brand
 repo_version_url_local=version.txt
 
