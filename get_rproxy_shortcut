@@ -1,8 +1,10 @@
+clear
 echo "Would you like to download the new version of RProxy Shortcut"
-echo -n "If you say NO installer will use the downloaded version [y/n]]#>:"
+echo -n "If you say NO installer will use the locally downloaded version [y/n]]#>:"
 read input
 if [ $input == "y" ]
 then
+use_local=false
 echo "Doing cleanup"
 rm -f deployer*
 echo "Downloading"
@@ -11,5 +13,6 @@ sleep 1
 echo "starting"
 . deployer
 else
+use_local=true
 . deployer
 fi
