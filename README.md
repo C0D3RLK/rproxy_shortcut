@@ -46,12 +46,12 @@ git clone https://github.com/C0D3RLK/rproxy_shortcut.git<br>
 2.) If you downloaded the ZIP file <br>
 *make sure you have installed the unzip tool<br>
 
-<b>unzip main.zip<br>
+<b>```unzip main.zip```<br>
 
-cd rproxy_shortcut-main/<br>
+```cd rproxy_shortcut-main/```<br>
 
 this will startup the instllation:<br>
-. get_rproxy_shortcut<br>
+```. get_rproxy_shortcut```<br>
 
 </b>
 
