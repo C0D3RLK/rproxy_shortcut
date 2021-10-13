@@ -2,7 +2,7 @@
 #Reverse-Proxy ShortCut-Installer Script By Kanthzone Networks
 #Author Kanth Raj | 86kanth@gmail.com
 
-me=1.0.7
+me=1.0.8
 echo "Installer Version:$me"
 echo
 
@@ -33,13 +33,24 @@ repo_sidefile2_local=bottom.conf
 repo_sidefile3_local=domain_editor
 repo_sidefile4_local=README
 repo_sidefile5_local=brand
+repo_version_url_local=version.txt
+
 
 which wget &> /dev/null || "wget tools is required try running, sudo yum install wget -y" exit 0
 which curl &> /dev/null || "curl tools is require try running, sudo yum install curl -y" exit 0
 which nano &> /dev/null || "nano tools is require try running, sudo yum install nano -y" exit 0
 
 app_version="$(curl --silent $repo_version_url)"
+if [ $use_local == "false" ]
+then
 app_size="$(curl -sI $repo_rproxy | grep -i Content-Length | awk '{print $2}'| tr -d '\r')"
+fi
+if [ $use_local == "true" ]
+then
+  app_size=5.67
+fi
+
+
 
 #system_setup
 loginsetup="/usr/bin/bash /bin/rproxy"
