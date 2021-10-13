@@ -155,12 +155,17 @@ echo -n "Proceed [y/n]:"
 read input
 
 
-
 installer(){
   echo "Making required local changes"
   initialdirs
   if [ $use_local == "false" ]
   then
+    rm -f $repo_rproxy_local
+    rm -f $repo_sidefile1_local
+    rm -f $repo_sidefile2_local
+    rm -f $repo_sidefile3_local
+    rm -f $repo_sidefile5_local
+    rm -f $repo_sidefile6_local
     echo "Downloading required files"
   wget $repo_rproxy
   sleep 2
