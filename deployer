@@ -41,14 +41,15 @@ which wget &> /dev/null || "wget tools is required try running, sudo yum install
 which curl &> /dev/null || "curl tools is require try running, sudo yum install curl -y" exit 0
 which nano &> /dev/null || "nano tools is require try running, sudo yum install nano -y" exit 0
 
-app_version="$(curl --silent $repo_version_url)"
 if [ $use_local == "false" ]
 then
-app_size="$(curl -sI $repo_rproxy | grep -i Content-Length | awk '{print $2}'| tr -d '\r')"
+  app_version="$(curl --silent $repo_version_url)"
+  app_size="$(curl -sI $repo_rproxy | grep -i Content-Length | awk '{print $2}'| tr -d '\r')"
 fi
 if [ $use_local == "true" ]
 then
-  app_size=6
+  app_size="5809"
+  app_version="$(cat version.txt)"
 fi
 
 
