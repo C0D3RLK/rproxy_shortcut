@@ -1,4 +1,5 @@
 #Reverse-Proxy ShortCut-Installer Script By Kanthzone Networks
+<br><b>Currently Only Supports 443 with SSL.<br>
 #Author Kanth Raj | 86kanth@gmail.com
 
 me=1.0.2
