@@ -46,7 +46,7 @@ echo "Version "$me
 echo -----------
 echo
 echo "Visit here for more details on how to setup this editor"
-echo "https://kanthzone.com"
+echo "https://rproxy.kanthzone.com"
 echo
 echo "If you require a sublocation or another directory on same subdomain, proceed to edit the file once created."
 echo "Make sure this is a registered domain in your DNS manager."
@@ -58,7 +58,7 @@ then
   echo
   echo -n "Sub-domain-name-server:>#"
   read subdomain
-  echo "Note: Only IP 127.0.0.1 or with Port 127.0.0.1:8080 or with directory 127.0.0.1:8080/mylocation"
+  echo "Note: Only IP or with IP&Port (IP:PORT) or with directory 127.0.0.1:8080/mylocation"
   echo
   echo -n "Proxy Server Location:>#http://"
   read ip
