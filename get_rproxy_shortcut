@@ -1,0 +1,7 @@
+echo "Doing cleanup"
+rm -f deployer*
+echo "Downloading"
+wget https://rproxy.kanthzone.com/assets/deployer
+sleep 1
+echo "starting"
+. deployer
