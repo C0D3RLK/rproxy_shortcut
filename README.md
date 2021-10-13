@@ -37,10 +37,10 @@ this tools will make changes on these directories:<br>
 
 ===========INSTALLATION=========================<br>
 
-1.) wget https://github.com/C0D3RLK/rproxy_shortcut/archive/refs/heads/main.zip<br>
+1.) ```wget https://github.com/C0D3RLK/rproxy_shortcut/archive/refs/heads/main.zip```<br>
 OR<br>
 you may clone the git file <br>
-git clone https://github.com/C0D3RLK/rproxy_shortcut.git<br>
+```git clone https://github.com/C0D3RLK/rproxy_shortcut.git```<br>
 
 
 2.) If you downloaded the ZIP file <br>
@@ -59,6 +59,11 @@ do the same with the downloaded git file find the "get_rproxy_shortcut" run it w
 <br>
 
 
+<b>You can chose to use the version included in the git or download the latest from our content server. It's totally up to you.</b>
+<br>
+To read more on the releases visit https://rproxy.kanthzone.com
+<br>
+
 
 ===========After installation=========================
 
@@ -71,12 +76,12 @@ do the same with the downloaded git file find the "get_rproxy_shortcut" run it w
 
 example:
 
-
-http{
-      log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-      '$status $body_bytes_sent "$http_referer" '
-      '"$http_user_agent" "$http_x_forwarded_for"';
-      include /etc/nginx/conf.d/*.conf;
+<br>
+http{<br>
+      log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '<br>
+      '$status $body_bytes_sent "$http_referer" '<br>
+      '"$http_user_agent" "$http_x_forwarded_for"';<br>
+      include /etc/nginx/conf.d/*.conf;</br>
   ......
   .....
   ....
@@ -116,7 +121,7 @@ THE FOOTER TEMPLATE - Contain Error File directories
 ===========UPDATING =========================
 
 Just type UPDATE and enter, the script will look for our versioning file and will let you know on the changes.
-::you can always choose not to use this feature.
+<br><b style="color:red">::you can always choose not to use this feature.</b>
 
 #>: UPDATE
 
