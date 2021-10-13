@@ -1,5 +1,5 @@
 clear
-echo "Would you like to download the new version of RProxy Shortcut"
+echo "Would you like to download the new version of RProxy Shortcut?"
 echo -n "If you say NO installer will use the locally downloaded version [y/n]]#>:"
 read input
 if [ $input == "y" ]
