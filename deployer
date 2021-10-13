@@ -1,0 +1,206 @@
+#!/bin/bash
+#Reverse-Proxy ShortCut-Installer Script By Kanthzone Networks
+#Author Kanth Raj | 86kanth@gmail.com
+
+me=1.0.7
+echo "Installer Version:$me"
+echo
+
+# Init
+FILE="/tmp/out.$$"
+GREP="/bin/grep"
+
+if [ "$(id -u)" != "0" ]; then
+  echo $?
+  clear
+  echo "This script must be run as root" 1>&2
+fi
+
+#system_setup
+current_usr="$(whoami)"
+currentloc="$(pwd)"
+
+#repo_url
+repo_rproxy=https://rproxy.kanthzone.com/assets/rproxy
+repo_version_url=https://rproxy.kanthzone.com/assets/version.txt
+repo_sidefile1=https://rproxy.kanthzone.com/assets/top.conf
+repo_sidefile2=https://rproxy.kanthzone.com/assets/bottom.conf
+repo_sidefile3=https://rproxy.kanthzone.com/assets/domain_editor
+repo_sidefile4=https://rproxy.kanthzone.com/assets/README
+repo_sidefile5=https://rproxy.kanthzone.com/assets/brand
+
+which wget &> /dev/null || "wget tools is required try running, sudo yum install wget -y" exit 0
+which curl &> /dev/null || "curl tools is require try running, sudo yum install curl -y" exit 0
+which nano &> /dev/null || "nano tools is require try running, sudo yum install nano -y" exit 0
+
+app_version="$(curl --silent $repo_version_url)"
+app_size="$(curl -sI $repo_rproxy | grep -i Content-Length | awk '{print $2}'| tr -d '\r')"
+
+#system_setup
+loginsetup="/usr/bin/bash /bin/rproxy"
+
+#directory_setup
+#localdir_nginx=/etc/nginx
+localdir_nginx=/etc/nginx
+localdir_domain=/etc/nginx/https
+localsubdir_domain=/etc/nginx/https/domains
+localdir_whitelist=/etc/nginx/conf.d
+domain_linkerfile=/etc/nginx/https/secured_sites.conf
+
+whitelist_script="allow all;"
+whitelist_file_loc="/etc/nginx/conf.d/whitelist.conf"
+rproxy_files="/$current_usr/rproxy_files"
+
+
+#file_setup
+domain_linkerfile_script="include /etc/nginx/https/domains/*.conf;"
+nginxloc_filescript_dir="$rproxy_files/nginxloc"
+nginxloc_filescript="cd $localdir_nginx"
+
+nginxdomainloc_filescript_dir="$rproxy_files/domainloc"
+nginxdomainloc_filescript="cd	$localsubdir_domain"
+
+nginxwhitelistloc_filescript_dir="$rproxy_files/whitelist"
+nginxwhitelistloc_filescript="cd   $localdir_whitelist"
+
+readme_loc="$rproxy_files/README"
+
+get_kb(){
+  KB=$(((app_size+512)/1024))
+  flzsize="$([ $KB -lt 1024 ] && echo ${KB} kilobytes)"
+}
+
+
+initialdirs(){
+  mkdir $rproxy_files
+  chmod 777 $rproxy_files
+  touch $nginxloc_filescript_dir
+  touch $nginxdomainloc_filescript_dir
+  touch $nginxwhitelistloc_filescript_dir
+  echo "Dir files creation:OK"
+  echo  $nginxloc_filescript > $nginxloc_filescript_dir
+  echo  $nginxdomainloc_filescript > $nginxdomainloc_filescript_dir
+  echo  $nginxwhitelistloc_filescript > $nginxwhitelistloc_filescript_dir
+  echo "Enabling files:OK"
+
+}
+
+mkddomain(){
+  mkdir $localdir_domain
+  mkdir $localsubdir_domain
+  echo "Directory creation:OK"
+  touch $domain_linkerfile
+  touch $whitelist_file_loc
+  echo "File creation:OK"
+  echo $domain_linkerfile_script > $domain_linkerfile
+  echo $whitelist_script > $whitelist_file_loc
+  echo "Linker script writing to file:OK"
+}
+
+if [ -d $localdir_nginx ]
+then echo "Directory $localdir_nginx:OK"
+else
+  #exit 1
+  echo "Directory $localdir_nginx Not Found. You must install nginx reverse proxy. try running sudo yum install nginx -y"
+  return
+fi
+
+
+if [ -d $localdir_domain ]
+then
+  echo "Directory $localdir_domain:OK"
+else
+  echo "Error: Directory $localdir_domain"
+  mkddomain
+fi
+
+
+
+echo
+echo -------------------------------
+echo "Reverse-Proxy ShortCut-Installer Script By Kanthzone Networks"
+echo -------------------------------
+get_kb
+echo "Starting_"
+sleep 3
+clear
+echo
+echo -------------------------------
+echo "Reverse-Proxy ShortCut-Installer Script By Kanthzone Networks"
+echo -------------------------------
+echo "Installer Version: $me"
+echo "RProxy Version: $app_version"
+echo "File Size:"$flzsize
+echo "This will install Reverse-Proxy ShortCut."
+echo
+echo -n "Proceed [y/n]:"
+read input
+
+
+
+installer(){
+  echo "Making required local changes"
+  initialdirs
+  echo "Downloading required files"
+  wget $repo_rproxy
+  sleep 2
+  wget -P $rproxy_files $repo_sidefile1
+  wget -P $rproxy_files $repo_sidefile2
+  wget -P $rproxy_files $repo_sidefile3
+  wget -P $rproxy_files $repo_sidefile4
+  wget -P $rproxy_files $repo_sidefile5
+  echo "Enabling script command"
+  mv rproxy /bin/rproxy
+  sleep 1
+  echo "Setting script privilege"
+  chmod 777 /bin/rproxy
+  sleep 1
+  echo "Setting Environment"
+  cp /$current_usr/.bashrc /$current_usr/bashrc.bak
+  echo $loginsetup >> /$current_usr/.bashrc
+  sleep 1
+  clear
+  echo
+  echo
+  echo ----------------------------------
+  echo "===========NOTE================="
+  echo
+  echo "Please place all your SSL certificates in these locations with the same name shown in below:"
+  echo
+  echo "SSL Certificate Location: /etc/pki/nginx/server.crt"
+  echo "SSL Certificate Private-Key Location: /etc/pki/nginx/private/server.key"
+  echo
+  echo ----------------------------------
+  echo "More info on readme file located in: $readme_loc"
+  echo
+  echo -n 'Do you want to read the setup guide [y/n]:'
+  read guideinput
+
+  if [ $guideinput == "y" ]
+  then
+    cat $readme_loc
+    echo
+    echo "Installation complete"
+    echo "Start with command rproxy"
+    echo "Or relogin to begin"
+    echo
+  else
+    echo
+    echo "Installation complete"
+    echo "Start with command rproxy"
+    echo "Or relogin to begin"
+    echo
+  fi
+
+
+  mv $currentloc/deployer $currentloc/deployer-bkp.bkp
+}
+
+if [ $input == "y" ]
+then
+  installer
+else
+  echo $?
+  clear
+  echo "Installer exited"
+fi

@@ -1,0 +1,101 @@
+#!/bin/bash
+#Reverse-Proxy ShortCut Script By Kanthzone Networks
+#Author Kanth Raj | 86kanth@gmail.com
+
+#system_setup
+me=1.0.3
+env=domain_editor
+current_usr="$(whoami)"
+loginsetup="/usr/bin/bash /bin/rproxy"
+
+#repo_urls
+version_file="https://rproxy.kanthzone.com/assets/version.txt"
+update_file="https://rproxy.kanthzone.com/assets/rproxy"
+
+
+#directory_setup
+localdir_nginx="/etc/nginx"
+localdir_domain="/etc/nginx/https/domains"
+localdir_whitelist="/etc/nginx/conf.d"
+localdir_whitelist_file="/etc/nginx/conf.d/whitelist.conf"
+rproxy_files="/$current_usr/rproxy_files"
+
+#file_directory
+nginxloc_filescript_dir="$rproxy_files/nginxloc"
+nginxdomainloc_filescript_dir="$rproxy_files/domainloc"
+nginxwhitelistloc_filescript_dir="$rproxy_files/whitelist"
+working_file="/bin/rproxy"
+
+#
+# environment_variables
+# running_whitelist="$(cat $localdir_whitelist_file)"
+# running_domains="$(ls $localdir_domain | sed -e 's/\.conf$//')"
+
+#templates_core_files
+header="$rproxy_files/top.conf"
+footer="$rproxy_files/bottom.conf"
+domain_editor="$rproxy_files/domain_editor"
+
+
+cat $rproxy_files/brand
+#-----------------------------------------------------------------------
+echo
+echo "RProxy Shortcuts By Kanthzone Networks"
+echo
+echo "Version "$me
+echo -----------
+echo
+echo "Visit here for more details on how to setup this editor"
+echo "https://kanthzone.com"
+echo
+echo "If you require a sublocation or another directory on same subdomain, proceed to edit the file once created."
+echo "Make sure this is a registered domain in your DNS manager."
+echo -----------
+echo -n "Begin config? [y/n]:"
+read proceedcreate
+if [ $proceedcreate == "y" ]
+then
+  echo
+  echo -n "Sub-domain-name-server:>#"
+  read subdomain
+  echo "Note: Only IP 127.0.0.1 or with Port 127.0.0.1:8080 or with directory 127.0.0.1:8080/mylocation"
+  echo
+  echo -n "Proxy Server Location:>#http://"
+  read ip
+  new_domainfile="$(echo ${subdomain//[.]/_}).conf"
+  new_domainfile_loc=$localdir_domain/$new_domainfile
+  touch $new_domainfile_loc
+  cat $header > $new_domainfile_loc
+  echo "server_name $subdomain;" >> $new_domainfile_loc
+  echo "location /{" >> $new_domainfile_loc
+  echo "proxy_pass http://$ip/;" >> $new_domainfile_loc
+  echo "}" >> $new_domainfile_loc
+  cat $footer >> $new_domainfile_loc
+  echo
+  echo -----------
+  echo
+  echo "Created new sub-domain-server: https://$subdomain"
+  echo "Proxied to local server: http://$ip/"
+  echo  "Config Filename: $new_domainfile"
+  #echo "${subdomain//[.]/_}.conf"
+  echo
+  echo "Remember to run Test config and Apply config"
+  echo
+  echo -n 'Proceed [y/n]:'
+  read proceed
+  if [ $proceed == "y" ]
+  then
+    clear
+    echo "Successfully added new domain config: "$subdomain
+    echo
+    echo "Please run Check Test Config & Apply Config"
+    echo
+    startup
+  else
+    echo "Process exited."
+    startup
+  fi
+else
+  echo "Process exited."
+  startup
+fi

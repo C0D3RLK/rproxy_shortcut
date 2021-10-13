@@ -1,0 +1,283 @@
+#!/bin/bash
+#Reverse-Proxy ShortCut Script By Kanthzone Networks
+#Author Kanth Raj | 86kanth@gmail.com
+
+#system_setup
+env=rproxy
+me=1.2.8
+current_usr="$(whoami)"
+loginsetup="/usr/bin/bash /bin/rproxy"
+
+#repo_urls
+version_file="https://rproxy.kanthzone.com/assets/version.txt"
+update_file="https://rproxy.kanthzone.com/assets/rproxy"
+update_file2="https://rproxy.kanthzone.com/assets/domain_editor"
+update_file3="https://rproxy.kanthzone.com/assets/README"
+update_file4="https://rproxy.kanthzone.com/assets/brand"
+
+#directory_setup
+localdir_nginx="/etc/nginx"
+localdir_nginx_config="/etc/nginx/nginx.conf"
+localdir_domain="/etc/nginx/https/domains"
+localdir_whitelist="/etc/nginx/conf.d"
+localdir_whitelist_file="/etc/nginx/conf.d/whitelist.conf"
+rproxy_files="/$current_usr/rproxy_files"
+
+#file_directory
+nginxloc_filescript_dir="$rproxy_files/nginxloc"
+nginxdomainloc_filescript_dir="$rproxy_files/domainloc"
+nginxwhitelistloc_filescript_dir="$rproxy_files/whitelist"
+working_file="/bin/rproxy"
+
+#environment_variables
+#running_whitelist="$(cat $localdir_whitelist_file)"
+#running_domains="$(ls $localdir_domain | sed -e 's/\.conf$//')"
+
+#templates_core_files
+header="$rproxy_files/top.conf"
+footer="$rproxy_files/bottom.conf"
+domain_editor="$rproxy_files/domain_editor"
+readme_loc="$rproxy_files/README"
+
+#-----------------------------------------------------------------------
+
+# Init
+FILE="/tmp/out.$$"
+GREP="/bin/grep"
+
+if [ "$(id -u)" != "0" ]; then
+  echo $?
+  clear
+  echo "This script must be run as root" 1>&2
+fi
+clear
+
+startup(){
+  #update on each call
+  cat $rproxy_files/brand
+  running_whitelist="$(cat $localdir_whitelist_file)"
+  running_domains="$(ls $localdir_domain | sed -e 's/\.conf$//')"
+  echo ----------
+  hostname
+  date
+  echo
+  echo "RProxy Shortcuts By Kanthzone Networks"
+  echo
+  echo "Version "$me
+  echo -----------
+  echo
+  echo "Running Domain files: "$running_domains
+  echo
+  echo "Running Global-Rules: "$running_whitelist
+  echo
+  echo -----------
+  echo "[1] To Rproxy Location"
+  echo "[2] To Rproxy Domains"
+  echo "[3] Edit Whitelist"
+  echo "[4] Add Domain"
+  echo "[5] View Domain Config"
+  echo "[6] Edit Domain Config"
+  echo "[7] Edit nginx Config"
+  echo "[8] Check New Config"
+  echo "[9] Apply New Config"
+  echo "[0] Exit"
+  echo "[UPDATE] Check for new version"
+  echo "[DEL] Uninstall"
+  echo
+  echo -n '#>:'
+  read input
+
+  if [ $input == 1 ]
+  then
+    clear
+    nginxloc
+  fi
+
+  if [ $input == 2 ]
+  then
+    clear
+    domainloc
+  fi
+
+  if [ $input == 3 ]
+  then
+    clear
+    #whitelistloc
+    nano $localdir_whitelist_file
+    startup
+  fi
+
+  if
+  [ $input == 4 ]
+  then
+    clear
+    . $domain_editor
+    echo $?
+  fi
+
+  if [ $input == 5 ]
+  then
+    echo -n '#filename:'
+    read flnm
+
+    [ -f /etc/nginx/https/domains/$flnm.conf ] && cat  /etc/nginx/https/domains/$flnm.conf || echo "File does not exist"
+    startup
+  fi
+
+  if [ $input == 6 ]
+  then
+    echo -n '#filename:'
+    read edtflnm
+    [ -f /etc/nginx/https/domains/$edtflnm.conf ] &&
+
+    #while [ ! -f /etc/nginx/htps/domains/$edtflnm ]; do sleep 1; done
+
+    nano  /etc/nginx/https/domains/$edtflnm.conf || echo "File does not exist"
+    startup
+  fi
+
+  if [ $input == 7 ]
+  then
+    nano /etc/nginx/nginx.conf
+    startup
+  fi
+
+  if [ $input == 8 ]
+  then
+    echo "Check config initiated:OK"
+    nginx -t
+    startup
+  fi
+
+  if [ $input == 9 ]
+  then
+    echo "Restart initiated:OK"
+    sudo service nginx restart
+    startup
+  fi
+
+  if [ $input == 0 ]
+  then
+    clear
+    echo $?
+    clear
+  fi
+
+
+  if [ $input == "DEL" ]
+  then
+    echo -n 'This will remove rproxy shortcut do you want to continue? [y/n]#>:'
+    read okproceed
+    if [ $okproceed == "y" ]
+    then
+      echo "Starting to remove"
+      sleep 1
+      rm -f $nginxwhitelistloc_filescript_dir
+      rm -f $nginxdomainloc_filescript_dir
+      rm -f $nginxloc_filescript_dir
+      rm -f /$current_usr/deployer-bkp.bkp
+      rm -f "$rproxy_files/*.*"
+      rm -rf $rproxy_files
+      echo
+      echo "Restoring environment"
+      cat /$current_usr/bashrc.bak > /$current_usr/.bashrc
+      sleep 1
+      rm -f /$current_usr/bashrc.bak
+      echo
+      echo "Rproxy ShortCut has been removed"
+      echo "However the nginx changes made will not be removed/undo"
+      rm -f  $working_file
+      echo
+    else
+      echo "Remover exited."
+      sleep 1
+      startup
+    fi
+  fi
+
+
+  start_update(){
+    rm -f $domain_editor
+    rm -f $rproxy_files/README
+    rm -f $rproxy_files/brand
+    echo "Downloading New version"
+    wget $update_file
+    wget -P $rproxy_files $update_file2
+    wget -P $rproxy_files $update_file3
+    wget -P $rproxy_files $update_file4
+    if [ -f "rproxy" ]; then
+      echo "Enabling service"
+      sleep 1
+      mv rproxy /bin/rproxy
+      echo "Changing permission"
+      chmod 777 /bin/rproxy
+      sleep 1
+      echo "Update Complete"
+      echo "This session will be ended, login again with command rproxy"
+    else
+      echo "Update failed Err404_fle"
+    fi
+    exit 0
+  }
+
+
+  if [ $input == "UPDATE" ]
+  then
+    output="$(curl --silent  $version_file)"
+    if [ $output != $me ]
+    then echo "Update Available, Version:"$output
+    echo -n 'Proceed update [y/n]#>:'
+    read proceed
+    if [ $proceed == "y" ]
+    then
+      start_update
+    else
+      echo "Updater exited"
+      sleep 1
+      startup
+    fi
+    startup
+  else
+    echo "No Update available"
+    sleep 1
+    startup
+  fi
+fi
+
+if [ $input == "which-rproxy" ]
+then
+  echo $update_file
+  startup
+fi
+
+}
+
+nginxloc(){
+  . $nginxloc_filescript_dir
+  $SHELL
+  echo $?
+  clear
+  return
+}
+
+domainloc(){
+  . $nginxdomainloc_filescript_dir
+  $SHELL
+  echo $?
+  clear
+  return
+}
+
+whitelistloc(){
+  . $nginxwhitelistloc_filescript_dir
+  $SHELL
+  echo $?
+  clear
+  return
+}
+
+#echo
+#startup
+#echo -n '#>:'
+#read input
+startup
