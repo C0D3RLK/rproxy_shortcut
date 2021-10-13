@@ -12,7 +12,7 @@ loginsetup="/usr/bin/bash /bin/rproxy"
 version_file="https://rproxy.kanthzone.com/assets/version.txt"
 update_file="https://rproxy.kanthzone.com/assets/rproxy"
 update_file2="https://rproxy.kanthzone.com/assets/domain_editor"
-update_file3="https://rproxy.kanthzone.com/assets/README"
+update_file3="https://rproxy.kanthzone.com/assets/README.md"
 update_file4="https://rproxy.kanthzone.com/assets/brand"
 
 #directory_setup
