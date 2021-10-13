@@ -81,7 +81,7 @@ nginxdomainloc_filescript="cd	$localsubdir_domain"
 nginxwhitelistloc_filescript_dir="$rproxy_files/whitelist"
 nginxwhitelistloc_filescript="cd   $localdir_whitelist"
 
-readme_loc="$rproxy_files/README"
+readme_loc="$rproxy_files/$repo_sidefile4_local"
 
 get_kb(){
   KB=$(((app_size+512)/1024))
