@@ -58,8 +58,9 @@ this will startup the instllation:<br>
 do the same with the downloaded git file find the "get_rproxy_shortcut" run it with bash.
 <br>
 
+===========Installation FROM Git / Cloud Server=========================
 
-<b>You can chose to use the version included in the git or download the latest from our content server. It's totally up to you.</b>
+<b>You can chose to install the version included in the git or download the latest from our content server. It's totally up to you.</b>
 <br>
 To read more on the releases visit https://rproxy.kanthzone.com
 <br>
