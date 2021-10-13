@@ -1,3 +1,8 @@
+echo "Would you like to download the new version of RProxy Shortcut"
+echo -n "If you say NO installer will use the downloaded version [y/n]]#>:"
+read input
+if [ $input == "y" ]
+then
 echo "Doing cleanup"
 rm -f deployer*
 echo "Downloading"
@@ -5,3 +10,6 @@ wget https://rproxy.kanthzone.com/assets/deployer
 sleep 1
 echo "starting"
 . deployer
+else
+. deployer
+fi
