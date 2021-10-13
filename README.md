@@ -1,5 +1,14 @@
+#Reverse-Proxy ShortCut-Installer Script By Kanthzone Networks
+#Author Kanth Raj | 86kanth@gmail.com
+
+me=1.0.2
+env=readme
+
 # rproxy_shortcut
-Nginx Reverse Proxy Shortcut Tool. This tool is to give you a simple UI in terminal to manage your nginx reverse proxy server. Like Adding subdomain in by just a second, whitelisting IP, blacklisting IP, Enabling/Disabling domains, Checking and applying configuration. 
+Nginx Reverse Proxy Shortcut Tool. This tool is to give you a simple UI in terminal to manage your nginx reverse proxy server. Like Adding subdomain in by just a second, whitelisting IP, blacklisting IP, Enabling/Disabling domains, Checking and applying configuration.
+
+
+
 
 ==========Note from author===================
 
@@ -13,16 +22,18 @@ This is fully open source, feel free to explore/improve or let me know if you ne
 or tell me what else did you upgrade this tool with.
 
 email: 86kanth@gmail.com
+web: https://rproxy.kanthzone.com
+blog: https://writings.kanthzone.com
 
 Additional:
 
-this tools will make changes in these directories:
-1.) current directory .bashrc
-2.) /bin
-3.) /etc/nginx
-4.) /etc/nginx/https
-5.) /etc/nginx/https/domains
-6.) content files stored at current directory /rproxy_files
+this tools will make changes on these directories:<br>
+1.) current directory .bashrc<br>
+2.) /bin<br>
+3.) /etc/nginx<br>
+4.) /etc/nginx/https<br>
+5.) /etc/nginx/https/domains<br>
+6.) content files stored at current directory /rproxy_files<br>
 
 
 ===========After installation=========================
@@ -31,7 +42,7 @@ this tools will make changes in these directories:
 1.) EDIT THE NGINX DEFAULT FILE
     nano /etc/nginx/nginx.conf
 
-2.) AND ADD THIS LINE inside http {} BEFORE THE CLOSING }
+2.) AND ADD THIS LINE inside http {} and BEFORE THE CLOSING }<br>
      include /etc/nginx/https/secured_sites.conf;
 
 example:
@@ -53,9 +64,59 @@ http{
 
  "===========SSL NOTE================="
 
- "Please place all your SSL certificates in these locations with the same name shown in below:"
+ "Please place all your SSL certificates in these locations with the same name shown in below:"<br>
 
- "SSL Certificate Location: /etc/pki/nginx/server.crt"
+ "SSL Certificate Location: /etc/pki/nginx/server.crt"<br>
  "SSL Certificate Private-Key Location: /etc/pki/nginx/private/server.key"
 
  ----------------------------------
+
+
+
+===========TEMPLATE =========================
+
+
+This package comes with preset nginx server config template.
+ You may change the template to suite your setup at:
+
+
+THE HEADER TEMPLATE - contains all the server & ssl related  setup
+ /<your root directory>/rproxy_files/top.config
+
+
+THE FOOTER TEMPLATE - Contain Error File directories
+/<your root directory>/rproxy_files/bottom.config
+
+
+
+===========UPDATING =========================
+
+Just type UPDATE and enter, the script will look for our versioning file and will let you know on the changes.
+::you can always choose not to use this feature.
+
+#>: UPDATE
+
+
+
+===========DELETING / REMOVING =========================
+
+Just type DEL and enter, the tool will remove it self and restore your previous environment.
+
+#>: DEL
+
+
+===========OTHER NOTE =========================
+
+Do not remove these files and directories, it will break the script functionality.
+<br>
+##FILES<br>
+/<your user/root directory>/bashrc.bak<br>
+/etc/nginx/conf.d/whitelist.conf<br>
+/bin/rproxy<br>
+<br>
+
+##DIRECTORIES<br>
+/<your user/root directory>/rproxy_files<br>
+/etc/nginx/<br>
+/etc/nginx/https/<br>
+/etc/nginx/https/domains<br>
