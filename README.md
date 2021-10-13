@@ -81,7 +81,7 @@ http{
   .....
   ....
 
-  include /etc/nginx/https/secured_sites.conf;
+```  include /etc/nginx/https/secured_sites.conf;```
 
 }
 
@@ -105,11 +105,11 @@ This package comes with preset nginx server config template.
 
 
 THE HEADER TEMPLATE - contains all the server & ssl related  setup
- /<your root directory>/rproxy_files/top.config
+ /your root directory/rproxy_files/top.config
 
 
 THE FOOTER TEMPLATE - Contain Error File directories
-/<your root directory>/rproxy_files/bottom.config
+/your root directory/rproxy_files/bottom.config
 
 
 
