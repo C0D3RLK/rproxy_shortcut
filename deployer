@@ -48,7 +48,7 @@ app_size="$(curl -sI $repo_rproxy | grep -i Content-Length | awk '{print $2}'| t
 fi
 if [ $use_local == "true" ]
 then
-  app_size=5.67
+  app_size=6
 fi
 
 
