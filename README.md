@@ -5,6 +5,8 @@ Update Feature Regional Availability: MY @Malaysia Only
 <br>
 <br>
 #Author Kanth Raj | 86kanth@gmail.com
+<br>
+Full step by step guide available at https://rproxy.kanthzone.com
 
 me=1.0.2
 env=readme
