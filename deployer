@@ -1,8 +1,9 @@
 #!/bin/bash
 #Reverse-Proxy ShortCut-Installer Script By Kanthzone Networks
 #Author Kanth Raj | 86kanth@gmail.com
+#1.0.9 Added whitelist guide
 
-me=1.0.8
+me=1.0.9
 echo "Installer Version:$me"
 echo
 
@@ -65,6 +66,8 @@ localsubdir_domain=/etc/nginx/https/domains
 localdir_whitelist=/etc/nginx/conf.d
 domain_linkerfile=/etc/nginx/https/secured_sites.conf
 
+whitelist_guide1="#Example Adding Multiple IP"
+whitelist_guide2="#127.0.0.1; 192.168.1.1; 192.168.1.2"
 whitelist_script="allow all;"
 whitelist_file_loc="/etc/nginx/conf.d/whitelist.conf"
 rproxy_files="/$current_usr/rproxy_files"
@@ -109,6 +112,8 @@ mkddomain(){
   echo "Directory creation:OK"
   touch $domain_linkerfile
   touch $whitelist_file_loc
+  echo  $whitelist_guide1 >> $whitelist_file_loc
+  echo  $whitelist_guide2 >> $whitelist_file_loc
   echo "File creation:OK"
   echo $domain_linkerfile_script > $domain_linkerfile
   echo $whitelist_script > $whitelist_file_loc
@@ -204,6 +209,8 @@ fi
   echo
   echo "SSL Certificate Location: /etc/pki/nginx/server.crt"
   echo "SSL Certificate Private-Key Location: /etc/pki/nginx/private/server.key"
+  echo
+  echo "If you are using Lets Encrypt please change these SSL location on the rproxy_files header"
   echo
   echo ----------------------------------
   echo "More info on readme file located in: $readme_loc"
