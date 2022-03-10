@@ -1,9 +1,11 @@
 #!/bin/bash
 #Reverse-Proxy ShortCut Script By Kanthzone Networks
 #Author Kanth Raj | 86kanth@gmail.com
+#1.0.4 allowed local https proxy
+#1.0.5 added X-forwarder option
 
 #system_setup
-me=1.0.3
+me=1.0.5
 env=domain_editor
 current_usr="$(whoami)"
 loginsetup="/usr/bin/bash /bin/rproxy"
@@ -35,6 +37,7 @@ working_file="/bin/rproxy"
 header="$rproxy_files/top.conf"
 footer="$rproxy_files/bottom.conf"
 domain_editor="$rproxy_files/domain_editor"
+add_on_params="$rproxy_files/params"
 
 
 cat $rproxy_files/brand
@@ -56,11 +59,16 @@ read proceedcreate
 if [ $proceedcreate == "y" ]
 then
   echo
-  echo -n "Sub-domain-name-server:>#"
+  echo "Just your domain or subdomain name example-subdomain: rproxy.kanthzone.com"
+  echo -n "Sub-domain-name:(only domain name)>#"
   read subdomain
-  echo "Note: Only IP or with IP&Port (IP:PORT) or with directory 127.0.0.1:8080/mylocation"
   echo
-  echo -n "Proxy Server Location:>#http://"
+  echo -n "Do you need X-Forwarder-For? [y/n]:"
+  read xfrreply
+  echo
+  echo "Note: IP or with IP&Port (IP:PORT) or with directory 127.0.0.1:8080/mylocation"
+  echo
+  echo -n "Proxy Server Location:(http or https)>#"
   read ip
   new_domainfile="$(echo ${subdomain//[.]/_}).conf"
   new_domainfile_loc=$localdir_domain/$new_domainfile
@@ -68,7 +76,54 @@ then
   cat $header > $new_domainfile_loc
   echo "server_name $subdomain;" >> $new_domainfile_loc
   echo "location /{" >> $new_domainfile_loc
-  echo "proxy_pass http://$ip/;" >> $new_domainfile_loc
+if [ $xfrreply == "y" ]
+then
+  cat $add_on_params >> $new_domainfile_loc
+fi
+  echo "proxy_pass $ip/;" >> $new_domainfile_loc
+  echo "}" >> $new_domainfile_loc
+  cat $footer >> $new_domainfile_loc
+  echo
+  echo -----------
+  echo
+  echo "Created new sub-domain-server: https://$subdomain"
+  echo "Proxied to local server: http://$ip/"
+  echo  "Config Filename: $new_domainfile"
+  #echo "${subdomain//[.]/_}.conf"
+  echo
+  echo "Remember to run Test config and Apply config"
+  echo
+  echo -n 'Proceed [y/n]:'
+  read proceed
+  if [ $proceed == "y" ]
+  then
+    clear
+    echo "Successfully added new domain config: "$subdomain
+    echo
+    echo "Please run Check Test Config & Apply Config"
+    echo
+    startup
+  else
+    echo "Process exited."
+    startup
+  fi
+else
+  echo "Process exited."
+  startup
+fi
+else
+  echo
+  echo "Note: IP or with IP&Port (IP:PORT) or with directory 127.0.0.1:8080/mylocation"
+  echo
+  echo -n "Proxy Server Location:(http or https)>#"
+  read ip
+  new_domainfile="$(echo ${subdomain//[.]/_}).conf"
+  new_domainfile_loc=$localdir_domain/$new_domainfile
+  touch $new_domainfile_loc
+  cat $header > $new_domainfile_loc
+  echo "server_name $subdomain;" >> $new_domainfile_loc
+  echo "location /{" >> $new_domainfile_loc
+  echo "proxy_pass $ip/;" >> $new_domainfile_loc
   echo "}" >> $new_domainfile_loc
   cat $footer >> $new_domainfile_loc
   echo
