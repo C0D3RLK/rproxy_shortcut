@@ -130,7 +130,7 @@ else
   echo -----------
   echo
   echo "Created new sub-domain-server: https://$subdomain"
-  echo "Proxied to local server: http://$ip/"
+  echo "Proxied to local server: $ip/"
   echo  "Config Filename: $new_domainfile"
   #echo "${subdomain//[.]/_}.conf"
   echo
