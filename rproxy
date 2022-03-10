@@ -4,7 +4,7 @@
 
 #system_setup
 env=rproxy
-me=1.2.8
+me=1.2.12
 current_usr="$(whoami)"
 loginsetup="/usr/bin/bash /bin/rproxy"
 
@@ -14,6 +14,9 @@ update_file="https://rproxy.kanthzone.com/assets/rproxy"
 update_file2="https://rproxy.kanthzone.com/assets/domain_editor"
 update_file3="https://rproxy.kanthzone.com/assets/README.md"
 update_file4="https://rproxy.kanthzone.com/assets/brand"
+update_file5="https://rproxy.kanthzone.com/assets/top.conf"
+update_file6="https://rproxy.kanthzone.com/assets/bottom.conf"
+update_file7="https://rproxy.kanthzone.com/assets/params"
 
 #directory_setup
 localdir_nginx="/etc/nginx"
@@ -37,7 +40,8 @@ working_file="/bin/rproxy"
 header="$rproxy_files/top.conf"
 footer="$rproxy_files/bottom.conf"
 domain_editor="$rproxy_files/domain_editor"
-readme_loc="$rproxy_files/README"
+readme_loc="$rproxy_files/README.md"
+add_on_params="$rproxy_files/params"
 
 #-----------------------------------------------------------------------
 
@@ -50,24 +54,21 @@ if [ "$(id -u)" != "0" ]; then
   clear
   echo "This script must be run as root" 1>&2
 fi
-clear
+#clear
 
 startup(){
   #update on each call
   cat $rproxy_files/brand
   running_whitelist="$(cat $localdir_whitelist_file)"
   running_domains="$(ls $localdir_domain | sed -e 's/\.conf$//')"
-  echo ----------
   hostname
   date
   echo
   echo "RProxy Shortcuts By Kanthzone Networks"
-  echo
   echo "Version "$me
   echo -----------
   echo
-  echo "Running Domain files: "$running_domains
-  echo
+  echo "Running Domain Files: "$running_domains
   echo "Running Global-Rules: "$running_whitelist
   echo
   echo -----------
@@ -91,12 +92,14 @@ startup(){
   then
     clear
     nginxloc
+    echo "You are in the file directory Exit the tool."
   fi
 
   if [ $input == 2 ]
   then
     clear
     domainloc
+    echo "You are in the file directory Exit the tool."
   fi
 
   if [ $input == 3 ]
@@ -163,7 +166,6 @@ startup(){
     clear
   fi
 
-
   if [ $input == "DEL" ]
   then
     echo -n 'This will remove rproxy shortcut do you want to continue? [y/n]#>:'
@@ -186,6 +188,8 @@ startup(){
       echo
       echo "Rproxy ShortCut has been removed"
       echo "However the nginx changes made will not be removed/undo"
+      echo "You may remove the added syntax from nginx config file to complete this tool removal."
+      echo
       rm -f  $working_file
       echo
     else
@@ -198,13 +202,19 @@ startup(){
 
   start_update(){
     rm -f $domain_editor
-    rm -f $rproxy_files/README
+    rm -f $rproxy_files/README.md
     rm -f $rproxy_files/brand
+    rm -f $header
+    rm -f $footer
+    rm -f $add_on_parameters
     echo "Downloading New version"
     wget $update_file
     wget -P $rproxy_files $update_file2
     wget -P $rproxy_files $update_file3
     wget -P $rproxy_files $update_file4
+    wget -P $rproxy_files $update_file5
+    wget -P $rproxy_files $update_file6
+    wget -P $rproxy_files $update_file7
     if [ -f "rproxy" ]; then
       echo "Enabling service"
       sleep 1
@@ -246,8 +256,21 @@ fi
 
 if [ $input == "which-rproxy" ]
 then
+  echo "========================================"
   echo $update_file
+  echo "Base:"
+  echo $me
+  echo "Editor:"
+  cat $domain_editor | grep "me="
+  echo "Editor-Desc:"
+  cat $domain_editor | grep -A2 "#Author" | grep -ve "#Author"
+  echo "========================================"
   startup
+fi
+
+if [ $input == "force-update" ]
+then
+  start_update
 fi
 
 }
