@@ -257,7 +257,7 @@ fi
 if [ $input == "which-rproxy" ]
 then
   echo "========================================"
-  echo $update_file
+  echo "Local/GitHub: https://github.com/C0D3RLK/rproxy_shortcut/blob/main/rproxy"
   echo "Base:"
   echo $me
   echo "Editor:"
